@@ -1,4 +1,6 @@
 // src/config/typeorm.config.ts
+// Configuración heredada del proyecto base; la app actual usa sequelize.config.ts.
+// Se conserva como referencia de una alternativa ORM, pero no se importa en AppModule.
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { PlayerDto } from 'src/modules/players/repositories/typeorm/player.dto';
 

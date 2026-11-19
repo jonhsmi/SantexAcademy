@@ -5,6 +5,7 @@ import { PlayerDto } from './player.dto';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
+// Adaptador legado del proyecto base; el módulo actual usa PlayersService con Sequelize.
 @Injectable()
 export class TypeOrmPlayerRepository implements IPlayerRepository {
   constructor(
@@ -32,6 +33,7 @@ export class TypeOrmPlayerRepository implements IPlayerRepository {
   }
 
   private mapToEntity(playerDto: PlayerDto): Player {
+    // Reduce la fila de la tabla a la entidad simplificada del ejercicio original.
     const player = new Player();
     player.id = playerDto.id;
     player.name = playerDto.longName;

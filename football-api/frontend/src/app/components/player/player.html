@@ -1,15 +1,69 @@
-<!-- src/app/components/player/player.html -->
-<div class="player-container">
-  <h1>Detalles del Jugador</h1>
-  <p>Selecciona un jugador para ver sus detalles.</p>
-<div *ngIf="player; else noPlayer">
-  <h2>{{ player.name }}</h2>
-  <p>Club: {{ player.club }}</p>
-  <p>Posición: {{ player.position }}</p>
-  <p>Nacionalidad: {{ player.nationality }}</p>
-  <p>Rating: {{ player.rating }}</p>
-</div>
+<!-- Pantalla del catálogo: acciones, filtros, tabla de resultados y paginación. -->
+<section class="page">
+  <div class="page-heading">
+    <div>
+      <p class="eyebrow">BASE DE DATOS FIFA</p>
+      <h1>Jugadores</h1>
+      <p class="muted">Busca, consulta y administra el plantel.</p>
+    </div>
+    <div class="toolbar">
+      <a class="button button-primary" routerLink="/players/new">+ Nuevo jugador</a>
+      <button class="button button-outline" type="button" (click)="exportCsv()">Exportar CSV</button>
+      <label class="button button-outline file-button">
+        Importar CSV
+        <input type="file" accept=".csv,text/csv" (change)="importCsv($event)">
+      </label>
+    </div>
+  </div>
 
-<ng-template #noPlayer>
-  <p>{{ errorMessage || 'Cargando jugador...' }}</p>
-</ng-template>
+  <!-- Los controles se convierten en query params al pulsar Buscar. -->
+  <form class="filter-panel" [formGroup]="filters" (ngSubmit)="search()">
+    <label>Nombre<input formControlName="name" placeholder="Ej. Lionel Messi"></label>
+    <label>Club<input formControlName="club" placeholder="Club"></label>
+    <label>Posición<input formControlName="position" placeholder="Ej. FW"></label>
+    <label>Nacionalidad<input formControlName="nationality" placeholder="País"></label>
+    <label>Género
+      <select formControlName="gender">
+        <option value="">Todos</option>
+        <option value="Male">Masculino</option>
+        <option value="Female">Femenino</option>
+      </select>
+    </label>
+    <button class="button button-primary filter-submit" type="submit">Buscar</button>
+  </form>
+
+  @if (message) { <p class="notice" role="status">{{ message }}</p> }
+  <div class="list-meta"><span>{{ total }} jugadores encontrados</span></div>
+
+  <!-- Distingue carga, tabla con filas y estado vacío sin cambiar de ruta. -->
+  @if (loading) {
+    <div class="panel empty-state">Cargando jugadores…</div>
+  } @else {
+    <div class="panel table-wrap">
+      <table>
+        <thead>
+          <tr><th>Jugador</th><th>Posición</th><th>Club</th><th>Rating</th><th>Nacionalidad</th><th></th></tr>
+        </thead>
+        <tbody>
+          @for (player of players; track player.id) {
+            <tr>
+              <td><strong>{{ player.longName }}</strong><small>{{ player.gender === 'Female' ? 'Femenino' : 'Masculino' }}</small></td>
+              <td><span class="tag">{{ player.playerPositions }}</span></td>
+              <td>{{ player.clubName || '—' }}</td>
+              <td><span class="rating">{{ player.overall }}</span></td>
+              <td>{{ player.nationalityName || '—' }}</td>
+              <td><a class="text-link" [routerLink]="['/players', player.id]">Ver perfil →</a></td>
+            </tr>
+          } @empty {
+            <tr><td class="empty-state" colspan="6">No encontramos jugadores con esos filtros.</td></tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <nav class="pagination" aria-label="Paginación">
+      <button class="button button-outline" type="button" [disabled]="page <= 1" (click)="go(page - 1)">Anterior</button>
+      <span>Página {{ page }} de {{ pages || 1 }}</span>
+      <button class="button button-outline" type="button" [disabled]="page >= pages" (click)="go(page + 1)">Siguiente</button>
+    </nav>
+  }
+</section>

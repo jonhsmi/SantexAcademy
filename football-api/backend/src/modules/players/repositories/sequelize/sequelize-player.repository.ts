@@ -4,6 +4,7 @@ import { PlayerModel } from './player.model'; // Sequelize model
 import { IPlayerRepository } from '../../interfaces/player-repository.interface';
 import { Player } from '../../entities/player.entity';
 
+// Adaptador de ejemplo que transforma modelos Sequelize a la entidad simplificada.
 @Injectable()
 export class SequelizePlayerRepository implements IPlayerRepository {
   constructor(
@@ -25,11 +26,11 @@ export class SequelizePlayerRepository implements IPlayerRepository {
   }
 
   private mapToEntity(model: PlayerModel): Player {
-    console.log('Mapping PlayerModel to Player entity:', model);
     if (!model) {
       throw new Error('Attempted to map null model to Player entity');
     }
     const player = new Player();
+    // La entidad de ejemplo tiene menos campos que el modelo FIFA completo.
     player.id = model.id;
     player.name = model.longName;
     player.club = model.clubName || 'Unknown Club';

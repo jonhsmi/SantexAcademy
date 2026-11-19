@@ -1,25 +1,25 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
+import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
-import { App } from 'supertest/types';
-import { AppModule } from '../backend/src/app.module';
+import { HealthController } from '../src/health.controller';
 
-describe('AppController (e2e)', () => {
-  let app: INestApplication<App>;
+// Prueba una petición HTTP real contra un módulo Nest mínimo.
+describe('HealthController (e2e)', () => {
+  let app: INestApplication;
 
   beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
+    const module = await Test.createTestingModule({
+      controllers: [HealthController],
     }).compile();
-
-    app = moduleFixture.createNestApplication();
+    app = module.createNestApplication();
     await app.init();
   });
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/')
+  afterEach(async () => app.close());
+
+  it('reports the API as available', () =>
+    request(app.getHttpServer())
+      .get('/api/health')
       .expect(200)
-      .expect('Hello World!');
-  });
+      .expect({ status: 'ok' }));
 });

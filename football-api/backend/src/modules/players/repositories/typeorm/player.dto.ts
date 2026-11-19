@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
+// Entidad TypeORM heredada y documentada; no se registra en la aplicación actual.
 /**
  * @description
  * Represents the Player entity as it is stored in the database.

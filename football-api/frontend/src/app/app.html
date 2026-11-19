@@ -1,3 +1,14 @@
-
-<h1>Welcome to the FE</h1>
-<app-player></app-player>
+<!-- Cabecera persistente: el enlace vuelve al catálogo y la sesión ofrece logout. -->
+<header class="topbar">
+  <a class="brand" routerLink="/">FIFA <span>PLAYER MANAGER</span></a>
+  @if (auth.isLoggedIn()) {
+    <div class="session">
+      <span>{{ auth.user()?.name }}</span>
+      <button class="button button-outline" (click)="auth.logout()">Cerrar sesión</button>
+    </div>
+  }
+</header>
+<!-- Angular muestra aquí la pantalla que coincide con la ruta actual. -->
+<main>
+  <router-outlet />
+</main>

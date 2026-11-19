@@ -1,13 +1,15 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { PlayerComponent } from './components/player/player';
+import { Component, inject } from '@angular/core';
+import { RouterLink, RouterOutlet } from '@angular/router';
+import { AuthService } from './services/auth/auth';
 
+// Cascarón compartido: mantiene la barra superior alrededor de cada pantalla.
 @Component({
   selector: 'app-root',
+  standalone: true,
+  imports: [RouterLink, RouterOutlet],
   templateUrl: './app.html',
-  imports: [PlayerComponent],
   styleUrl: './app.css',
 })
 export class App {
-  protected readonly title = signal('frontend');
+  protected readonly auth = inject(AuthService);
 }

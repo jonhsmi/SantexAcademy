@@ -1,3 +1,4 @@
+// Entidad sencilla del ejemplo de repositorios; la API actual devuelve PlayerModel.
 export class Player {
   declare id: number;
   declare name: string;

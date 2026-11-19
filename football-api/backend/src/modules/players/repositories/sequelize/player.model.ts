@@ -7,13 +7,23 @@ import {
   PrimaryKey,
   AutoIncrement,
 } from 'sequelize-typescript';
+import {
+  CreationOptional,
+  InferAttributes,
+  InferCreationAttributes,
+} from 'sequelize';
 
+// Mapea la tabla completa de jugadores FIFA; "declare" evita crear campos
+// JavaScript que oculten los getters/setters que Sequelize instala en el modelo.
 @Table({ tableName: 'players', timestamps: false })
-export class PlayerModel extends Model<PlayerModel> {
+export class PlayerModel extends Model<
+  InferAttributes<PlayerModel>,
+  InferCreationAttributes<PlayerModel>
+> {
   @PrimaryKey
   @AutoIncrement
   @Column(DataType.INTEGER)
-  declare id: number;
+  declare id: CreationOptional<number>;
 
   @Column({ field: 'fifa_version', type: DataType.STRING })
   declare fifaVersion: string;
@@ -27,14 +37,18 @@ export class PlayerModel extends Model<PlayerModel> {
   @Column({ field: 'long_name', type: DataType.STRING })
   declare longName: string;
 
+  @Column({ type: DataType.ENUM('Male', 'Female'), allowNull: false, defaultValue: 'Male' })
+  declare gender: 'Male' | 'Female';
+
+  // Datos generales de la ficha y sus estadísticas principales.
   @Column({ field: 'player_positions', type: DataType.STRING })
   declare playerPositions: string;
 
   @Column({ field: 'club_name', type: DataType.STRING, allowNull: true })
-  declare clubName?: string;
+  declare clubName: string | null;
 
   @Column({ field: 'nationality_name', type: DataType.STRING, allowNull: true })
-  declare nationalityName?: string;
+  declare nationalityName: string | null;
 
   @Column(DataType.INTEGER)
   declare overall: number;
@@ -55,273 +69,275 @@ export class PlayerModel extends Model<PlayerModel> {
   declare heightCm?: number;
 
   @Column({ field: 'weight_kg', type: DataType.INTEGER, allowNull: true })
-  weightKg?: number;
+  declare weightKg?: number;
 
   @Column({ field: 'preferred_foot', type: DataType.STRING, allowNull: true })
-  preferredFoot?: string;
+  declare preferredFoot?: string;
 
   @Column({ field: 'weak_foot', type: DataType.INTEGER, allowNull: true })
-  weakFoot?: number;
+  declare weakFoot?: number;
 
   @Column({ field: 'skill_moves', type: DataType.INTEGER, allowNull: true })
-  skillMoves?: number;
+  declare skillMoves?: number;
 
   @Column({
     field: 'international_reputation',
     type: DataType.INTEGER,
     allowNull: true,
   })
-  internationalReputation?: number;
+  declare internationalReputation?: number;
 
   @Column({ field: 'work_rate', type: DataType.STRING, allowNull: true })
-  workRate?: string;
+  declare workRate?: string;
 
   @Column({ field: 'body_type', type: DataType.STRING, allowNull: true })
-  bodyType?: string;
+  declare bodyType?: string;
 
   @Column({ type: DataType.INTEGER, allowNull: true })
-  pace?: number;
+  declare pace?: number;
 
   @Column({ type: DataType.INTEGER, allowNull: true })
-  shooting?: number;
+  declare shooting?: number;
 
   @Column({ type: DataType.INTEGER, allowNull: true })
-  passing?: number;
+  declare passing?: number;
 
   @Column({ type: DataType.INTEGER, allowNull: true })
-  dribbling?: number;
+  declare dribbling?: number;
 
   @Column({ type: DataType.INTEGER, allowNull: true })
-  defending?: number;
+  declare defending?: number;
 
   @Column({ type: DataType.INTEGER, allowNull: true })
-  physic?: number;
+  declare physic?: number;
 
+  // Atributos técnicos y de movimiento, opcionales según la edición de FIFA.
   @Column({
     field: 'attacking_crossing',
     type: DataType.INTEGER,
     allowNull: true,
   })
-  attackingCrossing?: number;
+  declare attackingCrossing?: number;
 
   @Column({
     field: 'attacking_finishing',
     type: DataType.INTEGER,
     allowNull: true,
   })
-  attackingFinishing?: number;
+  declare attackingFinishing?: number;
 
   @Column({
     field: 'attacking_heading_accuracy',
     type: DataType.INTEGER,
     allowNull: true,
   })
-  attackingHeadingAccuracy?: number;
+  declare attackingHeadingAccuracy?: number;
 
   @Column({
     field: 'attacking_short_passing',
     type: DataType.INTEGER,
     allowNull: true,
   })
-  attackingShortPassing?: number;
+  declare attackingShortPassing?: number;
 
   @Column({
     field: 'attacking_volleys',
     type: DataType.INTEGER,
     allowNull: true,
   })
-  attackingVolleys?: number;
+  declare attackingVolleys?: number;
 
   @Column({ field: 'skill_dribbling', type: DataType.INTEGER, allowNull: true })
-  skillDribbling?: number;
+  declare skillDribbling?: number;
 
   @Column({ field: 'skill_curve', type: DataType.INTEGER, allowNull: true })
-  skillCurve?: number;
+  declare skillCurve?: number;
 
   @Column({
     field: 'skill_fk_accuracy',
     type: DataType.INTEGER,
     allowNull: true,
   })
-  skillFkAccuracy?: number;
+  declare skillFkAccuracy?: number;
 
   @Column({
     field: 'skill_long_passing',
     type: DataType.INTEGER,
     allowNull: true,
   })
-  skillLongPassing?: number;
+  declare skillLongPassing?: number;
 
   @Column({
     field: 'skill_ball_control',
     type: DataType.INTEGER,
     allowNull: true,
   })
-  skillBallControl?: number;
+  declare skillBallControl?: number;
 
   @Column({
     field: 'movement_acceleration',
     type: DataType.INTEGER,
     allowNull: true,
   })
-  movementAcceleration?: number;
+  declare movementAcceleration?: number;
 
   @Column({
     field: 'movement_sprint_speed',
     type: DataType.INTEGER,
     allowNull: true,
   })
-  movementSprintSpeed?: number;
+  declare movementSprintSpeed?: number;
 
   @Column({
     field: 'movement_agility',
     type: DataType.INTEGER,
     allowNull: true,
   })
-  movementAgility?: number;
+  declare movementAgility?: number;
 
   @Column({
     field: 'movement_reactions',
     type: DataType.INTEGER,
     allowNull: true,
   })
-  movementReactions?: number;
+  declare movementReactions?: number;
 
   @Column({
     field: 'movement_balance',
     type: DataType.INTEGER,
     allowNull: true,
   })
-  movementBalance?: number;
+  declare movementBalance?: number;
 
   @Column({
     field: 'power_shot_power',
     type: DataType.INTEGER,
     allowNull: true,
   })
-  powerShotPower?: number;
+  declare powerShotPower?: number;
 
   @Column({ field: 'power_jumping', type: DataType.INTEGER, allowNull: true })
-  powerJumping?: number;
+  declare powerJumping?: number;
 
   @Column({ field: 'power_stamina', type: DataType.INTEGER, allowNull: true })
-  powerStamina?: number;
+  declare powerStamina?: number;
 
   @Column({ field: 'power_strength', type: DataType.INTEGER, allowNull: true })
-  powerStrength?: number;
+  declare powerStrength?: number;
 
   @Column({
     field: 'power_long_shots',
     type: DataType.INTEGER,
     allowNull: true,
   })
-  powerLongShots?: number;
+  declare powerLongShots?: number;
 
   @Column({
     field: 'mentality_aggression',
     type: DataType.INTEGER,
     allowNull: true,
   })
-  mentalityAggression?: number;
+  declare mentalityAggression?: number;
 
   @Column({
     field: 'mentality_interceptions',
     type: DataType.INTEGER,
     allowNull: true,
   })
-  mentalityInterceptions?: number;
+  declare mentalityInterceptions?: number;
 
   @Column({
     field: 'mentality_positioning',
     type: DataType.INTEGER,
     allowNull: true,
   })
-  mentalityPositioning?: number;
+  declare mentalityPositioning?: number;
 
   @Column({
     field: 'mentality_vision',
     type: DataType.INTEGER,
     allowNull: true,
   })
-  mentalityVision?: number;
+  declare mentalityVision?: number;
 
   @Column({
     field: 'mentality_penalties',
     type: DataType.INTEGER,
     allowNull: true,
   })
-  mentalityPenalties?: number;
+  declare mentalityPenalties?: number;
 
   @Column({
     field: 'mentality_composure',
     type: DataType.INTEGER,
     allowNull: true,
   })
-  mentalityComposure?: number;
+  declare mentalityComposure?: number;
 
+  // Datos defensivos y de portero disponibles en las ediciones más completas.
   @Column({
     field: 'defending_marking',
     type: DataType.INTEGER,
     allowNull: true,
   })
-  defendingMarking?: number;
+  declare defendingMarking?: number;
 
   @Column({
     field: 'defending_standing_tackle',
     type: DataType.INTEGER,
     allowNull: true,
   })
-  defendingStandingTackle?: number;
+  declare defendingStandingTackle?: number;
 
   @Column({
     field: 'defending_sliding_tackle',
     type: DataType.INTEGER,
     allowNull: true,
   })
-  defendingSlidingTackle?: number;
+  declare defendingSlidingTackle?: number;
 
   @Column({
     field: 'goalkeeping_diving',
     type: DataType.INTEGER,
     allowNull: true,
   })
-  goalkeepingDiving?: number;
+  declare goalkeepingDiving?: number;
 
   @Column({
     field: 'goalkeeping_handling',
     type: DataType.INTEGER,
     allowNull: true,
   })
-  goalkeepingHandling?: number;
+  declare goalkeepingHandling?: number;
 
   @Column({
     field: 'goalkeeping_kicking',
     type: DataType.INTEGER,
     allowNull: true,
   })
-  goalkeepingKicking?: number;
+  declare goalkeepingKicking?: number;
 
   @Column({
     field: 'goalkeeping_positioning',
     type: DataType.INTEGER,
     allowNull: true,
   })
-  goalkeepingPositioning?: number;
+  declare goalkeepingPositioning?: number;
 
   @Column({
     field: 'goalkeeping_reflexes',
     type: DataType.INTEGER,
     allowNull: true,
   })
-  goalkeepingReflexes?: number;
+  declare goalkeepingReflexes?: number;
 
   @Column({
     field: 'goalkeeping_speed',
     type: DataType.INTEGER,
     allowNull: true,
   })
-  goalkeepingSpeed?: number;
+  declare goalkeepingSpeed?: number;
 
   @Column({ field: 'player_traits', type: DataType.STRING, allowNull: true })
-  playerTraits?: string;
+  declare playerTraits?: string;
 }
